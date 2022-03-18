@@ -176,6 +176,8 @@ class Visited:
 
 def backtrack(my_frontier, my_visited, top_node, home_state):
     # top node is where we reached
+    print()
+    print("BackTrackig:-")
     current_node = top_node
     print(current_node.state)
     while current_node.state != home_state:
@@ -186,11 +188,11 @@ def backtrack(my_frontier, my_visited, top_node, home_state):
             if no.state == p:
                 current_node = no
         print(current_node.state)
-    print("=" * 40)
+    print("=" * 79)
 
 
 # BestFirstsearch Agent
-def BestFirstSearch_Agent(initial_state, goal_state):
+def BestFirstSearch_Agent(initial_state, goal_state,verbose):
     ##
     home_state = initial_state.copy()
     # (initial state, None,0)
@@ -203,6 +205,9 @@ def BestFirstSearch_Agent(initial_state, goal_state):
         return initial_state
 
     while my_frontier.is_empty() != True:
+        
+        if verbose >= 1:
+            print("visited:",[t.state for t in my_visited.visited_list])
         # while my frontier is not empty
         # Best First search
         top_node = my_frontier.top()
@@ -217,7 +222,10 @@ def BestFirstSearch_Agent(initial_state, goal_state):
             continue
 
         my_visited.add(top_node)  # expanded
-
+        print("current_state:", top_node.state)
+        if verbose >= 1:
+            print("frontier:", [(t.state, t.parent, t.path_cost) for t in my_frontier.list_nodes])
+            print()
         all_possible_actions = actions(top_node.state)
         c = top_node.path_cost
         all_possible_nodes = [
@@ -235,4 +243,32 @@ def BestFirstSearch_Agent(initial_state, goal_state):
         initial_state = top_node.state
 
 
-print(BestFirstSearch_Agent(initial_state, goal_state))
+if __name__ == "__main__":
+    """
+    In this problem we have consdered state as:
+     array of lenght 6 where each position contains values as 2/1/0 
+    2:- there is a rabbit and it can move only right 
+    1:- there is a rabbit and it can move only left
+    0:- there is no rabbit
+
+    initial state:- [2, 2, 2, 0, 1, 1, 1]
+    goal state:-    [1, 1, 1, 0, 2, 2, 2]
+
+    Note:- set verbose 0 for min display 
+           set verbose 1 for max display
+    """
+    initial_state = [1, 1, 1, 0, 2, 2, 2]
+    goal_state = [2, 2, 2, 0, 1, 1, 1]
+    verbose = 1
+
+
+    print("="*79)
+    print("="*30, end="")
+    print("Rabbit Leap",end="")
+    print("="*35, end="\n\n")
+
+    BestFirstSearch_Agent(initial_state, goal_state, verbose)
+
+    print("="*36, end="")
+    print("End",end="")
+    print("="*40, end="\n\n")

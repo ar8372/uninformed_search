@@ -5,6 +5,8 @@ Created on Mon Feb 28 12:59:31 2022
 @author: aman raj
 """
 
+import numpy as np
+
 # ----------------M C side
 initial_state = [3, 3, 0]
 goal_state = [0, 0, 1]
@@ -38,7 +40,7 @@ def pick_L2(current_state, i):
     return temp
 
 
-import numpy as np
+
 
 
 def actions(current_state):
@@ -55,7 +57,7 @@ def actions(current_state):
     for ro in int_states:
         if list(ro) == [0, 0]:
             # reached
-            print("current_state              ", (ro[0], ro[1], 1))
+            print("current_state:", (ro[0], ro[1], 1))
             return "Found"
         for r in [
             [3, 0],
@@ -197,11 +199,11 @@ def backtrack(my_frontier, my_visited, top_node, home_state):
             if no.state == p:
                 current_node = no
         print(current_node.state)
-    print("=" * 40)
+    print("=" * 79)
 
 
 # BestFirstsearch Agent
-def BestFirstSearch_Agent(initial_state, goal_state):
+def BestFirstSearch_Agent(initial_state, goal_state, verbose):
     ##
     home_state = initial_state.copy()
     # (initial state, None,0)
@@ -214,6 +216,9 @@ def BestFirstSearch_Agent(initial_state, goal_state):
         return initial_state
 
     while my_frontier.is_empty() != True:
+        if verbose >= 1:
+            print("visited:",[t.state for t in my_visited.visited_list])
+        
         # while my frontier is not empty
         # Best First search
         top_node = my_frontier.top()
@@ -229,7 +234,9 @@ def BestFirstSearch_Agent(initial_state, goal_state):
 
         my_visited.add(top_node)  # expanded
 
-        print("current_state              ", top_node.state)
+        print("current_state:", top_node.state)
+        print()
+        #print("frontier:", )
         all_possible_actions = actions(top_node.state)
         # print("these are all valid actions",all_possible_actions)
         if all_possible_actions == []:
@@ -269,9 +276,22 @@ if __name__ == "__main__":
     where side of boat is 0 if it is in left and 1 if it is in right.
     initial state:- (3, 3, 0)
     goal state:-    (0, 0, 1)
+    Note:- set verbose 0 for min display 
+           set verbose 1 for max display
     """
     # ----------------M C side
     initial_state = [3, 3, 0]
     goal_state = [0, 0, 1]
+    verbose = 0
 
-    print(BestFirstSearch_Agent(initial_state, goal_state))
+    print("="*79)
+    print("="*30, end="")
+    print("Missionary&Cannibal",end="")
+    print("="*30, end="\n\n")
+
+    #run:-
+    BestFirstSearch_Agent(initial_state, goal_state, verbose)
+
+    print("="*36, end="")
+    print("End",end="")
+    print("="*40, end="\n\n")
